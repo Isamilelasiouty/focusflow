@@ -1,0 +1,68 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner(resourceData) {
+      return request.auth != null && request.auth.uid == resourceData.ownerId;
+    }
+
+    function isOwnerOnCreate() {
+      return request.auth != null && request.auth.uid == request.resource.data.ownerId;
+    }
+
+    match /tasks/{taskId} {
+      allow read, update, delete: if isOwner(resource.data);
+      allow create: if isOwnerOnCreate();
+    }
+
+    match /projects/{projectId} {
+      allow read, update, delete: if isOwner(resource.data);
+      allow create: if isOwnerOnCreate();
+    }
+
+    match /clients/{clientId} {
+      allow read, update, delete: if isOwner(resource.data);
+      allow create: if isOwnerOnCreate();
+    }
+
+    match /seoSites/{siteId} {
+      allow read, update, delete: if isOwner(resource.data);
+      allow create: if isOwnerOnCreate();
+    }
+
+    match /seoTemplates/{templateId} {
+      allow read, update, delete: if isOwner(resource.data);
+      allow create: if isOwnerOnCreate();
+    }
+
+    match /goals/{goalId} {
+      allow read, update, delete: if isOwner(resource.data);
+      allow create: if isOwnerOnCreate();
+    }
+
+    match /notes/{noteId} {
+      allow read, update, delete: if isOwner(resource.data);
+      allow create: if isOwnerOnCreate();
+    }
+
+    match /references/{referenceId} {
+      allow read, update, delete: if isOwner(resource.data);
+      allow create: if isOwnerOnCreate();
+    }
+
+    match /timeEntries/{entryId} {
+      allow read, update, delete: if isOwner(resource.data);
+      allow create: if isOwnerOnCreate();
+    }
+
+    match /notifications/{notificationId} {
+      allow read, update, delete: if isOwner(resource.data);
+      allow create: if isOwnerOnCreate();
+    }
+
+    match /settings/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
